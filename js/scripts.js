@@ -5,9 +5,9 @@ $(function() {
     $(this).hide();
     $("#img-dk-gif").removeClass("d-none").addClass("d-block").show();
 
-    stdout.push("> I have summoned the Human Chaos Monkey!!!!<br/>");
-    stdout.push("> His job is to destroy a random node in your OCP cluster<br/>");
-    stdout.push("> Prepare for destruction!!!!<br/>");
+    stdout.push("<li>I have summoned the Human Chaos Monkey!!!!</li>");
+    stdout.push("<li>His job is to destroy a random node in your OCP cluster</li>");
+    stdout.push("<li>Prepare for destruction!!!!</li>");
 
     console.log(stdout)
   });
