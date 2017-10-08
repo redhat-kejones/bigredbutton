@@ -16,6 +16,7 @@
 		<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<link href="{{globals.appConf.__get('uriRoot')}}css/styles.css" rel="stylesheet">
+		<link href="{{globals.appConf.__get('uriRoot')}}css/styles-brb.css" rel="stylesheet">
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -37,12 +38,15 @@
 
 		<div id="siteUriRoot" class="hidden">{{globals.appConf.__get('uriRoot')}}</div>
 
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<!-- script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script -->
+		<script src="{{globals.appConf.__get('uriRoot')}}js/jquery.min.js"></script>
+		<script src="{{globals.appConf.__get('uriRoot')}}js/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+		<script src="{{globals.appConf.__get('uriRoot')}}js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 		<script src="{{globals.appConf.__get('uriRoot')}}js/highcharts.js"></script>
 		<script src="{{globals.appConf.__get('uriRoot')}}js/mock.js"></script>
 		<script src="{{globals.appConf.__get('uriRoot')}}js/main.js"></script>
-
+		<script src="{{globals.appConf.__get('uriRoot')}}js/scripts.js"></script>
 		<script src="{{globals.appConf.__get('uriRoot')}}js/jquery.placeholder.js"></script>
 		<script>$('input, textarea').placeholder();</script>
 
