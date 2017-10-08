@@ -19,27 +19,7 @@
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse navbar-fixed-top">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="{{globals.appConf.__get('uriRoot')}}">{{globals.appConf.__get('title')}}</a>
-				</div>
-				<div id="navbar" class="collapse navbar-collapse">
-					<ul class="nav navbar-nav">
-						<li class="active">
-							<a href="{{globals.appConf.__get('uriRoot')}}">Home</a>
-						</li>
-						<li>
-							<a href="{{globals.appConf.__get('uriRoot')}}slim">Slim</a>
-						</li>
-					</ul>
-				</div><!--/.nav-collapse -->
-			</div>
+			<a class="navbar-brand" href="{{globals.appConf.__get('uriRoot')}}">{{globals.appConf.__get('title')}}</a>
 		</nav>
 
 		<div id="container-main" class="container-fluid">
@@ -49,8 +29,8 @@
 		<footer class="row">
 			<div class="col-md-12 text-center" style="margin-top:20px;">
 				<ul>
-					<li><a href="http://www.sgt-inc.com">SGT, Inc.</a></li>
-					<li>&copy; SGT, Inc. 2015</li>
+					<li><a href="http://www.redhat.com">Red Hat, Inc.</a></li>
+					<li>Jason Ritenour, Gerald Dykeman, Jared Hocutt, Kevin Jones</li>
 				</ul>
 			</div>
 		</footer>
