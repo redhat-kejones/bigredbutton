@@ -35,12 +35,22 @@ $app->configureMode('development', function () use ($app) {
 	));
 });
 
+$openstack = new OpenStack\OpenStack([
+    'authUrl' => $appConf->__get('osAuthUrl'),
+    'region'  => $appConf->__get('osRegion'),
+    'user'    => [
+        'id'       => $appConf->__get('osUsername'),
+        'password' => $appConf->__get('osPassword')
+    ],
+    'scope'   => ['project' => ['id' => $appConf->__get('osProject')]]
+]);
+
 //Inject singleton pdoDbConn for database connection
-$app->container->singleton('pdoDbConn', function ($appConf) {
-	$dbConn = \com\sgtinc\PdoDbConn::getInstance();
-	$dbConn->createConnection($appConf->__get('dbConnString'),$appConf->__get('dbUsername'),$appConf->__get('dbPassword'));
-	return $dbConn->getPdoWrapper();
-});
+//$app->container->singleton('pdoDbConn', function ($appConf) {
+//	$dbConn = \com\sgtinc\PdoDbConn::getInstance();
+//	$dbConn->createConnection($appConf->__get('dbConnString'),$appConf->__get('dbUsername'),$appConf->__get('dbPassword'));
+//	return $dbConn->getPdoWrapper();
+//});
 
 //Setup and Configure TWIG Views
 $app->view(new \Slim\Views\Twig());

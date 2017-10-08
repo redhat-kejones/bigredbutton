@@ -4,6 +4,10 @@
 $app->get(
 	'/',
 	function() use ($app) {
+		$compute = $openstack->computeV2();
+
+		$servers = $compute->listServers();
+
 		$app->render(
 			'index.html'
 		);
