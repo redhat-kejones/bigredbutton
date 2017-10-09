@@ -16,6 +16,22 @@ $app->get(
 		    'scope'   => ['project' => ['id' => '0c8e55a7e7824437aa0aa9c89dec6b2a']]
 		]);
 
+		$identity = $openstack->identityV3();
+		$token = $identity->generateToken([
+		    'user' => [
+		        'id'       => 'operator',
+		        'password' => 'redhat'
+		    ],
+		    'scope' => [
+		        'project' => [
+		            'name' => 'operators',
+		            'domain' => [
+		                'id' => 'default'
+		            ]
+		        ]
+		    ]
+		]);
+
 		$compute = $openstack->computeV2();
 		$servers = $compute->listServers();
 
