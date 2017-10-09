@@ -16,8 +16,10 @@ $app->get(
 		    'scope'   => ['project' => ['id' => '0c8e55a7e7824437aa0aa9c89dec6b2a']]
 		]);
 
-		$identity = $openstack->identityV3();
-		$token = $identity->generateToken([
+		$openstack->authenticate();
+		print_r($client->getCatalog()->getItems());
+		//$identity = $openstack->identityV3();
+		/*$token = $identity->generateToken([
 		    'user' => [
 					'name'     => 'operator',
 					'password' => 'redhat',
@@ -33,9 +35,9 @@ $app->get(
 		            ]
 		        ]
 		    ]
-		]);
+		]);*/
 
-		$compute = $openstack->computeV2();
+		$compute = $openstack->computeV2('nova', 'regionOne');
 		$servers = $compute->listServers();
 
 		$app->render(
