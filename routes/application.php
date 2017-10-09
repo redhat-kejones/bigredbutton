@@ -19,8 +19,11 @@ $app->get(
 		$identity = $openstack->identityV3();
 		$token = $identity->generateToken([
 		    'user' => [
-		        'id'       => 'operator',
-		        'password' => 'redhat'
+					'name'     => 'operator',
+					'password' => 'redhat',
+					'domain'   => [
+							'id' => 'default'
+					]
 		    ],
 		    'scope' => [
 		        'project' => [
