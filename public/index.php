@@ -35,7 +35,7 @@ $app->configureMode('development', function () use ($app) {
 	));
 });
 
-$app->container->singleton('openstack', function () {
+$app->container->singleton('openstack', function ($appConf) {
 	$openstack = new OpenStack\OpenStack([
 	    'authUrl' => $appConf->__get('osAuthUrl'),
 	    'region'  => $appConf->__get('osRegion'),
