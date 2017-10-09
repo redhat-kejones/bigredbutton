@@ -22,6 +22,10 @@ class ApplicationConfig {
 	protected $smtpPassword;
 	protected $smtpFromEmail;
 	protected $smtpFromName;
+	protected $authUrl;
+	protected $region;
+	protected $user;
+	protected $scope;
 
 	public static function getInstance() {
 		static $instance = null;
