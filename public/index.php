@@ -37,13 +37,10 @@ $app->configureMode('development', function () use ($app) {
 
 $app->container->singleton('openstack', function ($appConf) {
 	$openstack = new OpenStack\OpenStack([
-	    'authUrl' => $appConf->__get('osAuthUrl'),
-	    'region'  => $appConf->__get('osRegion'),
-	    'user'    => [
-	        'id'       => $appConf->__get('osUsername'),
-	        'password' => $appConf->__get('osPassword')
-	    ],
-	    'scope'   => ['project' => ['id' => $appConf->__get('osProject')]]
+	    'authUrl'    => $appConf->__get('osAuthUrl'),
+	    'username'   => $appConf->__get('osUsername'),
+	    'password'   => $appConf->__get('osPassword'),
+	    'tenantName' => $appConf->__get('osProject')
 	]);
 	return $openstack;
 });
