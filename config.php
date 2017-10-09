@@ -35,11 +35,11 @@ switch($_SERVER['SERVER_NAME']) {
 
 		break;
 	default:
-		$appConf->__set('osAuthUrl','http://192.168.1.40:5000/v2.0/');
+		$appConf->__set('osAuthUrl','http://192.168.1.40:5000/v3/');
 		$appConf->__set('osRegion','regionOne');
-		$appConf->__set('osUsername','operator');
+		$appConf->__set('osUserId','3dc52851db9844419a4d9b4bb44fc846');
 		$appConf->__set('osPassword','redhat');
-		$appConf->__set('osProject','operators');
+		$appConf->__set('osProjectId','0c8e55a7e7824437aa0aa9c89dec6b2a');
 		break;
 }
 

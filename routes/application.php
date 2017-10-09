@@ -3,6 +3,26 @@
 // Landing Page route
 $app->get(
 	'/',
+	function() use ($app,$appConf) {
+        	$openStack = $app->openStack;
+
+		//print_r($openStack);
+
+		$compute = $openStack->computeV2();
+		$servers = $compute->listServers(true);
+
+                foreach ($servers as $server) {
+                     print_r($server);
+                }
+
+		$app->render(
+			'index.html'
+		);
+	}
+);
+
+$app->get(
+	'/nova-servers',
 	function() use ($app) {
 		//$openstack = $app->openstack;
 
@@ -10,34 +30,15 @@ $app->get(
 		    'authUrl' => 'http://192.168.1.40:5000/v3/',
 		    'region'  => 'regionOne',
 		    'user'    => [
-		        'id'       => 'operator',
+		        'id'       => '3dc52851db9844419a4d9b4bb44fc846',
 		        'password' => 'redhat'
 		    ],
 		    'scope'   => ['project' => ['id' => '0c8e55a7e7824437aa0aa9c89dec6b2a']]
 		]);
 
-		$openstack->authenticate();
-		print_r($client->getCatalog()->getItems());
-		//$identity = $openstack->identityV3();
-		/*$token = $identity->generateToken([
-		    'user' => [
-					'name'     => 'operator',
-					'password' => 'redhat',
-					'domain'   => [
-							'id' => 'default'
-					]
-		    ],
-		    'scope' => [
-		        'project' => [
-		            'name' => 'operators',
-		            'domain' => [
-		                'id' => 'default'
-		            ]
-		        ]
-		    ]
-		]);*/
+		print_r($openstack);
 
-		$compute = $openstack->computeV2('nova', 'regionOne');
+		$compute = $openstack->computeV2();
 		$servers = $compute->listServers();
 
 		$app->render(

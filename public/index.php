@@ -1,5 +1,7 @@
 <?php
 date_default_timezone_set('US/Eastern');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 session_start();
 
@@ -14,7 +16,7 @@ $app = new \Slim\Slim(array(
 $app->setName($appConf->__get('title'));
 
 $app->container->singleton('log', function () {
-	$log = new \Monolog\Logger('contractportfolio');
+	$log = new \Monolog\Logger('bigredbutton');
 	$log->pushHandler(new \Monolog\Handler\StreamHandler('../logs/app.log', \Monolog\Logger::DEBUG));
 	return $log;
 });
@@ -35,22 +37,26 @@ $app->configureMode('development', function () use ($app) {
 	));
 });
 
-$app->container->singleton('openstack', function ($appConf) {
-	$openstack = new OpenStack\OpenStack([
-	    'authUrl'    => $appConf->__get('osAuthUrl'),
-	    'username'   => $appConf->__get('osUsername'),
-	    'password'   => $appConf->__get('osPassword'),
-	    'tenantName' => $appConf->__get('osProject')
-	]);
-	return $openstack;
-});
-
 //Inject singleton pdoDbConn for database connection
 //$app->container->singleton('pdoDbConn', function ($appConf) {
 //	$dbConn = \com\sgtinc\PdoDbConn::getInstance();
 //	$dbConn->createConnection($appConf->__get('dbConnString'),$appConf->__get('dbUsername'),$appConf->__get('dbPassword'));
 //	return $dbConn->getPdoWrapper();
 //});
+
+$app->container->singleton('openStack', function () use ($appConf) {
+	$openStack = new \OpenStack\OpenStack([
+            'authUrl' => $appConf->__get('osAuthUrl'),
+            'region'  => $appConf->__get('osRegion'),
+            'user'    => [
+                'id'       => $appConf->__get('osUserId'),
+                'password' => $appConf->__get('osPassword')
+            ],
+            'scope'   => ['project' => ['id' => $appConf->__get('osProjectId')]]
+        ]);
+
+	return $openStack;
+});
 
 //Setup and Configure TWIG Views
 $app->view(new \Slim\Views\Twig());
