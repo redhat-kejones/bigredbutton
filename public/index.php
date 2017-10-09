@@ -35,15 +35,18 @@ $app->configureMode('development', function () use ($app) {
 	));
 });
 
-$openstack = new OpenStack\OpenStack([
-    'authUrl' => $appConf->__get('osAuthUrl'),
-    'region'  => $appConf->__get('osRegion'),
-    'user'    => [
-        'id'       => $appConf->__get('osUsername'),
-        'password' => $appConf->__get('osPassword')
-    ],
-    'scope'   => ['project' => ['id' => $appConf->__get('osProject')]]
-]);
+$app->container->singleton('openstack', function () {
+	$openstack = new OpenStack\OpenStack([
+	    'authUrl' => $appConf->__get('osAuthUrl'),
+	    'region'  => $appConf->__get('osRegion'),
+	    'user'    => [
+	        'id'       => $appConf->__get('osUsername'),
+	        'password' => $appConf->__get('osPassword')
+	    ],
+	    'scope'   => ['project' => ['id' => $appConf->__get('osProject')]]
+	]);
+	return $openstack;
+});
 
 //Inject singleton pdoDbConn for database connection
 //$app->container->singleton('pdoDbConn', function ($appConf) {

@@ -4,8 +4,8 @@
 $app->get(
 	'/',
 	function() use ($app) {
+		$openstack = $app->openstack;
 		$compute = $openstack->computeV2();
-
 		$servers = $compute->listServers();
 
 		$app->render(
