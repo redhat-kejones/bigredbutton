@@ -4,7 +4,18 @@
 $app->get(
 	'/',
 	function() use ($app) {
-		$openstack = $app->openstack;
+		//$openstack = $app->openstack;
+
+		$openstack = new OpenStack\OpenStack([
+		    'authUrl' => 'http://192.168.1.40:5000/v2.0',
+		    'region'  => 'regionOne',
+		    'user'    => [
+		        'id'       => 'operator',
+		        'password' => 'redhat'
+		    ],
+		    'scope'   => ['project' => ['id' => '0c8e55a7e7824437aa0aa9c89dec6b2a']]
+		]);
+
 		$compute = $openstack->computeV2();
 		$servers = $compute->listServers();
 
