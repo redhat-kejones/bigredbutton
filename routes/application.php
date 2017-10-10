@@ -4,16 +4,14 @@
 $app->get(
 	'/',
 	function() use ($app,$appConf) {
-        	$openStack = $app->openStack;
-
-		//print_r($openStack);
+        $openStack = $app->openStack;
 
 		$compute = $openStack->computeV2();
 		$servers = $compute->listServers(true);
 
-                foreach ($servers as $server) {
-                     print_r($server);
-                }
+        foreach ($servers as $server) {
+        	print_r($server);
+        }
 
 		$app->render(
 			'index.html'
@@ -22,30 +20,87 @@ $app->get(
 );
 
 $app->get(
-	'/nova-servers',
-	function() use ($app) {
-		//$openstack = $app->openstack;
+	'/ocp-nodes',
+	function() use ($app, $appConf) {
+		$serverArr = array();
+		$openStack = $app->openStack;
 
-		$openstack = new OpenStack\OpenStack([
-		    'authUrl' => 'http://192.168.1.40:5000/v3/',
-		    'region'  => 'regionOne',
-		    'user'    => [
-		        'id'       => '3dc52851db9844419a4d9b4bb44fc846',
-		        'password' => 'redhat'
-		    ],
-		    'scope'   => ['project' => ['id' => '0c8e55a7e7824437aa0aa9c89dec6b2a']]
-		]);
+		$compute = $openStack->computeV2();
+		$servers = $compute->listServers(true, ['flavorId'=>'4d3d73a3-4575-49a1-93d3-2a20c565aded']);
 
-		print_r($openstack);
+		foreach ($servers as $server) {
+        	array_push($serverArr, $server);
+        }
 
-		$compute = $openstack->computeV2();
-		$servers = $compute->listServers();
-
-		$app->render(
-			'index.html'
-		);
-	}
+        $response = $app->response();
+    	$response['Content-Type'] = 'application/json';
+    	$response->body(json_encode($serverArr));
+    }
 );
+
+$app->get(
+	'/ocp-control-nodes',
+	function() use ($app, $appConf) {
+		$serverArr = array();
+		$openStack = $app->openStack;
+
+		$compute = $openStack->computeV2();
+		$servers = $compute->listServers(true, ['flavorId'=>'50503afe-7a3e-4768-9a35-3f097264d6ee']);
+
+		foreach ($servers as $server) {
+        	array_push($serverArr, $server);
+        }
+
+        $response = $app->response();
+    	$response['Content-Type'] = 'application/json';
+    	$response->body(json_encode($serverArr));
+    }
+);
+
+$app->get(
+	'/delete-server/:id',
+	function($id) use ($app, $appConf) {
+		try {
+			$serverArr = array();
+			$openStack = $app->openStack;
+
+			$compute = $openStack->computeV2();
+
+			$servers = $compute->listServers(true, ['flavorId'=>'4d3d73a3-4575-49a1-93d3-2a20c565aded']);
+
+			$isOcpNode = false;
+			foreach ($servers as $server) {
+        		if ($id == $server->id) {
+        			$isOcpNode = true;
+        		}
+        	}
+
+        	if ($isOcpNode) {
+        		$server = $compute->getServer(['id' => $id]);
+				$server->delete();
+
+				$results['success'] = true;
+	        	$results['message'] = "Server (".$id.") was deleted successfully";
+        	} else {
+        		$results['success'] = false;
+	        	$results['message'] = "Server (".$id.") is not an OCP Node";
+        	}
+			
+
+        } catch (\Exception $e) {
+        	$app->log->error($e);
+            $results['success'] = false;
+            $results['message'] = "Server (".$id.") was not deleted";
+        }
+
+        header('Content-Type: application/json');
+
+        $response = $app->response();
+    	$response['Content-Type'] = 'application/json';
+    	$response->body(json_encode($results));
+    }
+);
+
 
 // Slim Doc route
 $app->get(
