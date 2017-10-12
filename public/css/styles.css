@@ -7,7 +7,7 @@ html, body {
 }
 
 body {
-	
+
 }
 
 .container-fluid {
@@ -23,6 +23,10 @@ body {
 
 #container-main {
 	padding-top:20px;
+}
+
+footer {
+	margin-top: 20px;
 }
 
 footer ul {

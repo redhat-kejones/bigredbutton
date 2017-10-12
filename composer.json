@@ -10,12 +10,10 @@
 		{"name": "Kevin Jones","email": "kjones@sgt-inc.com","role": "Solutions Architect"}
 	],
 	"support": {
-		"email": "kjones@sgt-inc.com",
-		"issues": "https://github.com/SGT-LaRC/slim-twig-skeleton/issues",
-		"source": "https://github.com/SGT-LaRC/slim-twig-skeleton"
+		"email": "kevinjones@redhat.com"
 	},
 	"require": {
-		"php": ">=5.3.10",
+		"php": ">=7.0",
 		"monolog/monolog": "1.*",
 		"phpunit/phpunit": "4.1.*",
 		"slim/slim": "2.*",

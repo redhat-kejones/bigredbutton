@@ -2,40 +2,25 @@
 
 {% block content %}
 
-<section class="container">
-	<div class="row">
-		<div id="div-chaos-wheel" class="container text-center col-sm-12">
-			<button name="chaos" id="button-chaos" class="btn btn-danger btn-lg btn-block m-3">Click Me!!!!</button>
-			<img id="img-dk-gif" src="img/dk.gif" class="img-fluid mx-auto d-none m-3" />
-		</div>
-	</div>
-</section>
-
 <section class="container-fluid">
 	<div class="row">
 		<div id="div-cluster-health" class="container col-sm-6">
-			<h2>OCP Cluster Health</h2>
-			<h3>Masters</h3>
-			<ul>
-			  <li>Master 1 healthy</li>
-			</ul>
-			<h3>Infras</h3>
-			<ul>
-			  <li>Infra 1 healthy</li>
-			</ul>
-			<h3>Nodes</h3>
-			<ul>
-			  <li>Node 1 healthy</li>
-			  <li>Node 2 unhealthy</li>
-			  <li>Node 3 healthy</li>
-			</ul>
-			{{ servers }}
+			{% include 'ocpClusterStatus.html' %}
 		</div>
 		<div class="shell-wrap" class="col-sm-6">
 			<p class="shell-top-bar">/var/log/bigredbutton/</p>
 			<ul class="shell-body" id="div-app-console">
 			  <li></li>
 			</ul>
+		</div>
+	</div>
+</section>
+
+<section class="container">
+	<div class="row">
+		<div id="div-chaos-wheel" class="container text-center col-sm-12">
+			<button name="chaos" id="button-chaos" class="btn btn-danger btn-lg btn-block m-3">Click Me!!!!</button>
+			<img id="img-dk-gif" src="img/dk.gif" class="img-fluid mx-auto d-none m-3" />
 		</div>
 	</div>
 </section>

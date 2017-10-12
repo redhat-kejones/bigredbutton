@@ -10,7 +10,7 @@
 
 		<!-- link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" -->
 		<link rel="stylesheet" href="{{globals.appConf.__get('uriRoot')}}css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
 
 
 		<!--[if lt IE 9]>
@@ -26,7 +26,7 @@
 		</nav>
 
 		{% block content %}{% endblock %}
-		
+
 		<footer class="row">
 			<div class="col-md-12 text-center" style="margin-top:20px;">
 				<ul>
@@ -36,7 +36,7 @@
 			</div>
 		</footer>
 
-		<div id="siteUriRoot" class="hidden">{{globals.appConf.__get('uriRoot')}}</div>
+		<div id="siteUriRoot" class="d-none">{{globals.appConf.__get('uriRoot')}}</div>
 
 		<!-- script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script -->
