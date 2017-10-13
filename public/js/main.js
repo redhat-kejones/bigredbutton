@@ -33,7 +33,8 @@ $(document).ready(function() {
 	//Check OCP Cluster Status
 	setInterval(function() {
 		console.log(stdout);
-		getOcpClusterStatus();
+		getOcpControlStatus();
+		getOcpNodeStatus();
 	}, 15000);
 
 	//Write to stdout
@@ -47,10 +48,133 @@ $(document).ready(function() {
 	}, 6000);
 
 	function getOcpClusterStatus() {
-		$.get( "/ocp-cluster-status", function( data ) {
-			$( "#div-cluster-health" ).html( data );
+		$.get( "/ocp-cluster-status").done(function(results){
+			$( "#div-cluster-health" ).html( results );
+			stdout.push( "<li>OCP Cluster Status refreshed</li>" );
 		});
-		stdout.push( "<li>OCP Cluster Status refreshed</li>" );
+	}
+
+	function getOcpControlStatus() {
+		$.get( "/ocp-control-status" ).done(function(results){
+			var nodeIds = [];
+			var nodeId;
+			var nodeName;
+			var nodeStatus;
+			var visibleNodeIds =[];
+			var deletedNodeIds = [];
+			var liContent;
+
+			console.log(results);
+
+			for (var i = 0; i < results.length; i++) {
+				console.log(results[i]);
+				nodeIds.push(results[i].id);
+				if(results[i].status == 'ACTIVE') {
+					$("#badge-node-"+results[i].id).removeClass('alert-danger').addClass('alert-success').html("Healthy");
+				} else {
+					$("#badge-node-"+results[i].id).removeClass('alert-success').addClass('alert-danger').html("Unhealthy");
+				}
+			}
+
+			console.log(nodeIds);
+
+			$(".li-ocp-control").each(function() {
+				nodeId = $(this).attr("aria-ocp-node-id");
+				console.log(nodeId);
+				visibleNodeIds.push(nodeId);
+				if(nodeIds.indexOf(nodeId) == -1) { //== -1 for not in array
+					$("#badge-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("Unhealthy");
+					$(this).fadeOut(5000).remove();
+					deletedNodeIds.push(nodeId);
+				}
+			});
+
+			console.log(visibleNodeIds);
+			console.log(deletedNodeIds);
+
+			for (var i = 0; i < results.length; i++) {
+				console.log(results[i]);
+				nodeId = results[i].id;
+				nodeName = results[i].name;
+				nodeStatus = results[i].status;
+
+				console.log(nodeId);
+
+				if(visibleNodeIds.indexOf(nodeId) == -1 && deletedNodeIds.indexOf(nodeId) == -1) {
+					liContent = '<li id="li-node-'+nodeId+'" class="li-ocp-node list-group-item" aria-ocp-node-id="'+nodeId+'">'+nodeName;
+
+					if(nodeStatus == 'ACTIVE') {
+						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-success pull-right">Healthy</span>';
+					} else {
+						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-danger pull-right">Unhealthy</span>';
+					}
+
+					liContent = liContent + '</li>';
+
+					$(".ul-ocp-control").append(liContent);
+				}
+			}
+
+			stdout.push( "<li>OCP Master and Infra Status refreshed</li>" );
+		});
+	}
+
+	function getOcpNodeStatus() {
+		$.get( "/ocp-node-status" ).done(function(results){
+			var nodeIds = [];
+			var nodeId;
+			var nodeName;
+			var nodeStatus;
+			var visibleNodeIds =[];
+			var deletedNodeIds = [];
+			var liContent;
+			console.log(results);
+
+			for (var i = 0; i < results.length; i++) {
+				console.log(results[i]);
+				nodeIds.push(results[i].id);
+				if(results[i].status == 'ACTIVE') {
+					$("#badge-node-"+results[i].id).removeClass('alert-danger').addClass('alert-success').html("Healthy");
+				} else {
+					$("#badge-node-"+results[i].id).removeClass('alert-success').addClass('alert-danger').html("Unhealthy");
+				}
+			}
+
+			console.log(nodeIds);
+
+			$(".li-ocp-node").each(function() {
+				nodeId = $(this).attr("aria-ocp-node-id");
+				console.log(nodeId);
+				visibleNodeIds.push(nodeId);
+				if(nodeIds.indexOf(nodeId) == -1) { //== -1 for not in array
+					$("#badge-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("Unhealthy");
+					$(this).fadeOut(5000).remove();
+					deletedNodeIds.push(nodeId);
+				}
+			});
+
+			for (var i = 0; i < results.length; i++) {
+				nodeId = results[i].id;
+				nodeName = results[i].name;
+				nodeStatus = results[i].status;
+
+				if(visibleNodeIds.indexOf(nodeId) == -1 && deletedNodeIds.indexOf(nodeId) == -1) {
+					liContent = '<li id="li-node-'+nodeId+'" class="li-ocp-node list-group-item" aria-ocp-node-id="'+nodeId+'">'+nodeName;
+
+					if(nodeStatus == 'ACTIVE') {
+						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-success pull-right">Healthy</span>';
+					} else {
+						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-danger pull-right">Unhealthy</span>';
+					}
+
+					liContent = liContent + '</li>';
+
+					$(".ul-ocp-node").append(liContent);
+				}
+			}
+
+			stdout.push( "<li>OCP Node Status refreshed</li>" );
+		});
 	}
 
 	function writeStdOut() {

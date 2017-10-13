@@ -1,20 +1,20 @@
 <h2>OCP Cluster Health</h2>
 
 <h3>Master/Infra Nodes</h3>
-<ul class="list-group">
+<ul class="ul-ocp-control list-group">
   {% for ocpNode in ocpControlStatus %}
-  <li class="list-group-item">
+  <li id="li-node-{{ ocpNode.id }}" class="li-ocp-control list-group-item" aria-ocp-node-id="{{ ocpNode.id }}">
     {{ ocpNode.name }}
-    {% if ocpNode.status == 'ACTIVE' %}<span class="badge alert-success pull-right">Healthy</span>{% else %}<span class="badge alert-danger pull-right">Unhealthy</span>{% endif %}
+    {% if ocpNode.status == 'ACTIVE' %}<span id="badge-node-{{ ocpNode.id }}" class="badge alert-success pull-right">Healthy</span>{% else %}<span class="badge alert-danger pull-right">Unhealthy</span>{% endif %}
   </li>
   {% endfor %}
 </ul>
 <h3>Nodes</h3>
-<ul class="list-group">
+<ul class="ul-ocp-node list-group">
   {% for ocpNode in ocpNodeStatus %}
-  <li class="list-group-item">
+  <li id="li-node-{{ ocpNode.id }}" class="li-ocp-node list-group-item" aria-ocp-node-id="{{ ocpNode.id }}">
     {{ ocpNode.name }}
-    {% if ocpNode.status == 'ACTIVE' %}<span class="badge alert-success pull-right">Healthy</span>{% else %}<span class="badge alert-danger pull-right">Unhealthy</span>{% endif %}
+    {% if ocpNode.status == 'ACTIVE' %}<span id="badge-node-{{ ocpNode.id }}" class="badge alert-success pull-right">Healthy</span>{% else %}<span class="badge alert-danger pull-right">Unhealthy</span>{% endif %}
   </li>
   {% endfor %}
 </ul>
