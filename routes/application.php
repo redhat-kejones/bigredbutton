@@ -14,12 +14,12 @@ $app->get(
 		$ocpNodeStatus = array();
 
 		foreach ($ocpControlNodes as $node) {
-			$nodeStatus = array("type"=>"Master/Infra","id"=>$node->id,"name"=>$node->name,"status"=>$node->status);
+			$nodeStatus = array("type"=>"Master/Infra","id"=>$node->id,"name"=>$node->name,"novaStatus"=>$node->status,"ocpStatus"=>"Ready");
 			array_push($ocpControlStatus,$nodeStatus);
 		}
 
 		foreach ($ocpNodes as $node) {
-			$nodeStatus = array("type"=>"Node","id"=>$node->id,"name"=>$node->name,"status"=>$node->status);
+			$nodeStatus = array("type"=>"Node","id"=>$node->id,"name"=>$node->name,"novaStatus"=>$node->status,"ocpStatus"=>"Ready");
 			array_push($ocpNodeStatus,$nodeStatus);
 		}
 
@@ -46,12 +46,12 @@ $app->get(
 		$ocpNodeStatus = array();
 
 		foreach ($ocpControlNodes as $node) {
-			$nodeStatus = array("type"=>"Master/Infra","id"=>$node->id,"name"=>$node->name,"status"=>$node->status);
+			$nodeStatus = array("type"=>"Master/Infra","id"=>$node->id,"name"=>$node->name,"novaStatus"=>$node->status,"ocpStatus"=>"Ready");
 			array_push($ocpControlStatus,$nodeStatus);
 		}
 
 		foreach ($ocpNodes as $node) {
-			$nodeStatus = array("type"=>"Node","id"=>$node->id,"name"=>$node->name,"status"=>$node->status);
+			$nodeStatus = array("type"=>"Node","id"=>$node->id,"name"=>$node->name,"novaStatus"=>$node->status,"ocpStatus"=>"Ready");
 			array_push($ocpNodeStatus,$nodeStatus);
 		}
 
@@ -76,7 +76,7 @@ $app->get(
 		$ocpControlStatus = array();
 
 		foreach ($ocpControlNodes as $node) {
-			$nodeStatus = array("type"=>"Master/Infra","id"=>$node->id,"name"=>$node->name,"status"=>$node->status);
+			$nodeStatus = array("type"=>"Master/Infra","id"=>$node->id,"name"=>$node->name,"novaStatus"=>$node->status,"ocpStatus"=>"Ready");
 			array_push($ocpControlStatus,$nodeStatus);
 		}
 
@@ -89,14 +89,50 @@ $app->get(
 $app->get(
 	'/ocp-node-status',
 	function() use ($app,$appConf) {
-    $openStack = $app->openStack;
+		$ocpNodeStatus = array();
+		$ocpNodes = array();
+
+		$openStack = $app->openStack;
 
 		$compute = $openStack->computeV2();
-		$ocpNodes = $compute->listServers(true, ['flavorId'=>'4d3d73a3-4575-49a1-93d3-2a20c565aded']);
-		$ocpNodeStatus = array();
+		$ospNodes = $compute->listServers(true, ['flavorId'=>'4d3d73a3-4575-49a1-93d3-2a20c565aded']);
 
-		foreach ($ocpNodes as $node) {
-			$nodeStatus = array("type"=>"Node","id"=>$node->id,"name"=>$node->name,"status"=>$node->status);
+		$ocpNodes = array();
+		$client = new GuzzleHttp\Client( ['base_uri' => $appConf->__get('ocpApiUrl')]);
+		$headers = [
+    	'Authorization' => 'Bearer ' . $appConf->__get('ocpToken'),
+    	'Accept'        => 'application/json',
+		];
+		$results = $client->request('GET','api/v1/nodes', [
+		    'headers' => $headers,
+				'verify' => false
+		]);
+
+		$contentsClass = json_decode($results->getBody()->getContents());
+
+		foreach ($contentsClass->items as $ocpNode) {
+			if(stripos($ocpNode->metadata->name,'master') !== false) {
+				continue;
+			}
+			if(isset($ocpNode->metadata->labels->region) && $ocpNode->metadata->labels->region == 'infra') {
+				continue;
+			}
+
+			$ocpStatus = "Not Ready";
+			if($ocpNode->status->conditions[3]->status == "True") {
+				$ocpStatus = "Ready";
+			}
+
+			$ocpNodes[substr($ocpNode->metadata->name,0,strpos($ocpNode->metadata->name,'.'))] = $ocpStatus;
+		}
+
+		foreach ($ospNodes as $ospNode) {
+			$ocpStatus = "Not Ready";
+			if(isset($ocpNodes[$ospNode->name])) {
+				$ocpStatus = $ocpNodes[$ospNode->name];
+			}
+
+			$nodeStatus = array("type"=>"Node","id"=>$ospNode->id,"name"=>$ospNode->name,"novaStatus"=>$ospNode->status,"ocpStatus"=>$ocpStatus);
 			array_push($ocpNodeStatus,$nodeStatus);
 		}
 
@@ -250,6 +286,45 @@ $app->get(
     $response = $app->response();
   	$response['Content-Type'] = 'application/json';
   	$response->body(json_encode($lastRequest));
+  }
+);
+
+// OCP Routes
+$app->get(
+	'/ocp-api',
+	function() use ($app, $appConf) {
+		$nodes = array();
+		$client = new GuzzleHttp\Client( ['base_uri' => $appConf->__get('ocpApiUrl')]);
+		$headers = [
+    	'Authorization' => 'Bearer ' . $appConf->__get('ocpToken'),
+    	'Accept'        => 'application/json',
+		];
+		$results = $client->request('GET','api/v1/nodes', [
+		    'headers' => $headers,
+				'verify' => false
+		]);
+
+		$contentsClass = json_decode($results->getBody()->getContents());
+
+		foreach ($contentsClass->items as $node) {
+			var_dump($node->metadata->name);
+			var_dump(stripos($node->metadata->name,'master'));
+			if(stripos($node->metadata->name,'master') !== false) {
+				print("I'm a master node");
+				continue;
+			}
+			if(isset($node->metadata->labels->region) && $node->metadata->labels->region == 'infra') {
+				print("I'm an infra node");
+				continue;
+			}
+			var_dump($node);
+			//$node->status->conditions
+			array_push($nodes, $node);
+		}
+
+    $response = $app->response();
+  	$response['Content-Type'] = 'application/json';
+  	//$response->body(json_encode($contentsClass));
   }
 );
 

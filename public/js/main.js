@@ -34,7 +34,7 @@ $(document).ready(function() {
 	//Write to stdout
 	setInterval(function() {
 		writeStdOut();
-	}, 2500);
+	}, 3000);
 
 	//setInterval(function() {
 		//$("#div-app-console").animate({ scrollTop: $("#div-app-console").prop("scrollHeight") }, 3000);
@@ -59,10 +59,16 @@ $(document).ready(function() {
 
 			for (var i = 0; i < results.length; i++) {
 				nodeIds.push(results[i].id);
-				if(results[i].status == 'ACTIVE') {
-					$("#badge-node-"+results[i].id).removeClass('alert-danger').addClass('alert-success').html("Healthy");
+				if(results[i].novaStatus == 'ACTIVE') {
+					$("#badge-node-"+results[i].id).removeClass('alert-danger').addClass('alert-success').html("Nova: "+results[i].novaStatus);
 				} else {
-					$("#badge-node-"+results[i].id).removeClass('alert-success').addClass('alert-danger').html("Unhealthy");
+					$("#badge-node-"+results[i].id).removeClass('alert-success').addClass('alert-danger').html("Nova: "+results[i].novaStatus);
+				}
+
+				if(results[i].ocpStatus == 'Ready') {
+					$("#badge-ocp-node-"+results[i].id).removeClass('alert-danger').addClass('alert-success').html('OCP: '+results[i].ocpStatus);
+				} else {
+					$("#badge-ocp-node-"+results[i].id).removeClass('alert-success').addClass('alert-danger').html('OCP: '+results[i].ocpStatus);
 				}
 			}
 
@@ -70,7 +76,8 @@ $(document).ready(function() {
 				nodeId = $(this).attr("aria-ocp-node-id");
 				visibleNodeIds.push(nodeId);
 				if(nodeIds.indexOf(nodeId) == -1) { //== -1 for not in array
-					$("#badge-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("Unhealthy");
+					$("#badge-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("Nova: Unhealthy");
+					$("#badge-ocp-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("OCP: Not Ready");
 					$(this).fadeOut(5000).remove();
 					deletedNodeIds.push(nodeId);
 				}
@@ -79,15 +86,22 @@ $(document).ready(function() {
 			for (var i = 0; i < results.length; i++) {
 				nodeId = results[i].id;
 				nodeName = results[i].name;
-				nodeStatus = results[i].status;
+				nodeNovaStatus = results[i].novaStatus;
+				nodeOcpStatus = results[i].ocpStatus;
 
 				if(visibleNodeIds.indexOf(nodeId) == -1 && deletedNodeIds.indexOf(nodeId) == -1) {
 					liContent = '<li id="li-node-'+nodeId+'" class="li-ocp-node list-group-item" aria-ocp-node-id="'+nodeId+'">'+nodeName;
 
-					if(nodeStatus == 'ACTIVE') {
-						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-success pull-right">Healthy</span>';
+					if(nodeOcpStatus == 'Ready') {
+						liContent = liContent + '<span id="badge-ocp-node-'+nodeId+'" class="badge alert-success pull-right">OCP: '+nodeOcpStatus+'</span>';
 					} else {
-						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-danger pull-right">Unhealthy</span>';
+						liContent = liContent + '<span id="badge-ocp-node-'+nodeId+'" class="badge alert-danger pull-right">OCP: '+nodeOcpStatus+'</span>';
+					}
+
+					if(nodeNovaStatus == 'ACTIVE') {
+						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-success pull-right">Nova: '+nodeNovaStatus+'</span>';
+					} else {
+						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-danger pull-right">Nova: '+nodeNovaStatus+'</span>';
 					}
 
 					liContent = liContent + '</li>';
@@ -114,10 +128,16 @@ $(document).ready(function() {
 
 			for (var i = 0; i < results.length; i++) {
 				nodeIds.push(results[i].id);
-				if(results[i].status == 'ACTIVE') {
-					$("#badge-node-"+results[i].id).removeClass('alert-danger').addClass('alert-success').html("Healthy");
+				if(results[i].novaStatus == 'ACTIVE') {
+					$("#badge-node-"+results[i].id).removeClass('alert-danger').addClass('alert-success').html('Nova: '+results[i].novaStatus);
 				} else {
-					$("#badge-node-"+results[i].id).removeClass('alert-success').addClass('alert-danger').html("Unhealthy");
+					$("#badge-node-"+results[i].id).removeClass('alert-success').addClass('alert-danger').html('Nova: '+results[i].novaStatus);
+				}
+
+				if(results[i].ocpStatus == 'Ready') {
+					$("#badge-ocp-node-"+results[i].id).removeClass('alert-danger').addClass('alert-success').html('OCP: '+results[i].ocpStatus);
+				} else {
+					$("#badge-ocp-node-"+results[i].id).removeClass('alert-success').addClass('alert-danger').html('OCP: '+results[i].ocpStatus);
 				}
 			}
 
@@ -125,7 +145,8 @@ $(document).ready(function() {
 				nodeId = $(this).attr("aria-ocp-node-id");
 				visibleNodeIds.push(nodeId);
 				if(nodeIds.indexOf(nodeId) == -1) { //== -1 for not in array
-					$("#badge-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("Unhealthy");
+					$("#badge-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("Nova: Unhealthy");
+					$("#badge-ocp-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("OCP: Not Ready");
 					$(this).fadeOut(5000).remove();
 					deletedNodeIds.push(nodeId);
 				}
@@ -134,15 +155,22 @@ $(document).ready(function() {
 			for (var i = 0; i < results.length; i++) {
 				nodeId = results[i].id;
 				nodeName = results[i].name;
-				nodeStatus = results[i].status;
+				nodeNovaStatus = results[i].novaStatus;
+				nodeOcpStatus = results[i].ocpStatus;
 
 				if(visibleNodeIds.indexOf(nodeId) == -1 && deletedNodeIds.indexOf(nodeId) == -1) {
 					liContent = '<li id="li-node-'+nodeId+'" class="li-ocp-node list-group-item" aria-ocp-node-id="'+nodeId+'">'+nodeName;
 
-					if(nodeStatus == 'ACTIVE') {
-						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-success pull-right">Healthy</span>';
+					if(nodeOcpStatus == 'Ready') {
+						liContent = liContent + '<span id="badge-ocp-node-'+nodeId+'" class="badge alert-success pull-right">OCP: '+nodeOcpStatus+'</span>';
 					} else {
-						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-danger pull-right">Unhealthy</span>';
+						liContent = liContent + '<span id="badge-ocp-node-'+nodeId+'" class="badge alert-danger pull-right">OCP: '+nodeOcpStatus+'</span>';
+					}
+
+					if(nodeNovaStatus == 'ACTIVE') {
+						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-success pull-right">Nova: '+nodeNovaStatus+'</span>';
+					} else {
+						liContent = liContent + '<span id="badge-node-'+nodeId+'" class="badge alert-danger pull-right">Nova: '+nodeNovaStatus+'</span>';
 					}
 
 					liContent = liContent + '</li>';
@@ -165,7 +193,6 @@ $(document).ready(function() {
 		var requestContent = '';
 		$.get( "/cf-latest-service-request" ).done(function(results){
 
-			console.log(results);
 			if (results.request_state == 'finished') {
 				if (results.status == 'Ok') {
 					requestContent += '<span class="badge alert-success pull-right">Ok - ';

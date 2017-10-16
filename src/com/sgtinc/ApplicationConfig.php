@@ -30,6 +30,8 @@ class ApplicationConfig {
 	protected $cfApiUrl;
 	protected $cfUsername;
 	protected $cfPassword;
+	protected $ocpApiUrl;
+	protected $ocpToken;
 
 	public static function getInstance() {
 		static $instance = null;

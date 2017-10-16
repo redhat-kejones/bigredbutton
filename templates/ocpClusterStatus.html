@@ -6,7 +6,16 @@
   {% for ocpNode in ocpControlStatus %}
   <li id="li-node-{{ ocpNode.id }}" class="li-ocp-control list-group-item" aria-ocp-node-id="{{ ocpNode.id }}">
     {{ ocpNode.name }}
-    {% if ocpNode.status == 'ACTIVE' %}<span id="badge-node-{{ ocpNode.id }}" class="badge alert-success pull-right">Healthy</span>{% else %}<span class="badge alert-danger pull-right">Unhealthy</span>{% endif %}
+    {% if ocpNode.ocpStatus == 'Ready' %}
+      <span id="badge-ocp-node-{{ ocpNode.id }}" class="badge alert-success pull-right">OCP: {{ ocpNode.ocpStatus }}</span>
+    {% else %}
+      <span id="badge-ocp-node-{{ ocpNode.id }}" class="badge alert-danger pull-right">OCP: {{ ocpNode.ocpStatus }}</span>
+    {% endif %}
+    {% if ocpNode.novaStatus == 'ACTIVE' %}
+      <span id="badge-node-{{ ocpNode.id }}" class="badge alert-success pull-right">Nova: {{ ocpNode.novaStatus }}</span>
+    {% else %}
+      <span id="badge-node-{{ ocpNode.id }}" class="badge alert-danger pull-right">Nova: {{ ocpNode.novaStatus }}</span>
+    {% endif %}
   </li>
   {% endfor %}
 </ul>
@@ -16,7 +25,16 @@
   {% for ocpNode in ocpNodeStatus %}
   <li id="li-node-{{ ocpNode.id }}" class="li-ocp-node list-group-item" aria-ocp-node-id="{{ ocpNode.id }}">
     {{ ocpNode.name }}
-    {% if ocpNode.status == 'ACTIVE' %}<span id="badge-node-{{ ocpNode.id }}" class="badge alert-success pull-right">Healthy</span>{% else %}<span class="badge alert-danger pull-right">Unhealthy</span>{% endif %}
+    {% if ocpNode.ocpStatus == 'Ready' %}
+      <span id="badge-ocp-node-{{ ocpNode.id }}" class="badge alert-success pull-right">OCP: Ready</span>
+    {% else %}
+      <span id="badge-ocp-node-{{ ocpNode.id }}" class="badge alert-danger pull-right">OCP: Not Ready</span>
+    {% endif %}
+    {% if ocpNode.novaStatus == 'ACTIVE' %}
+      <span id="badge-node-{{ ocpNode.id }}" class="badge alert-success pull-right">Nova: {{ ocpNode.novaStatus }}</span>
+    {% else %}
+      <span id="badge-node-{{ ocpNode.id }}" class="badge alert-danger pull-right">Nova: {{ ocpNode.novaStatus }}</span>
+    {% endif %}
   </li>
   {% endfor %}
 </ul>
