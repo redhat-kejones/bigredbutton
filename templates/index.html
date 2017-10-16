@@ -4,23 +4,33 @@
 
 <section class="container-fluid">
 	<div class="row">
-		<div id="div-cluster-health" class="container col-sm-6">
+		<div id="div-cluster-health" class="col-sm-6">
 			{% include 'ocpClusterStatus.html' %}
+
+			<span id="badge-cf-request-update" class="badge pull-right"></span>
+			<div class="panel panel-default ">
+				<div class="panel-heading">
+					<h3 class="panel-title">Latest CloudForms Service Request</h3>
+				</div>
+				<div id="cf-latest-service-request" class="panel-body"></div>
+			</div>
 		</div>
-		<div class="shell-wrap" class="col-sm-6">
-			<p class="shell-top-bar">/var/log/bigredbutton/</p>
-			<ul class="shell-body" id="div-app-console">
-			  <li></li>
-			</ul>
+		<div class="col-sm-6">
+			<div class="shell-wrap">
+				<p class="shell-top-bar">/var/log/bigredbutton/</p>
+				<ul class="shell-body" id="div-app-console">
+				  <li></li>
+				</ul>
+			</div>
+			<!-- img id="img-dk-gif" src="img/dk.gif" class="img-fluid mx-auto hidden m-3" / -->
 		</div>
 	</div>
 </section>
 
 <section class="container">
 	<div class="row">
-		<div id="div-chaos-wheel" class="container text-center col-sm-12">
+		<div id="div-chaos-button" class="text-center col-sm-12">
 			<button name="chaos" id="button-chaos" class="btn btn-danger btn-lg btn-block m-3">Click Me!!!!</button>
-			<img id="img-dk-gif" src="img/dk.gif" class="img-fluid mx-auto d-none m-3" />
 		</div>
 	</div>
 </section>

@@ -213,6 +213,46 @@ $app->get(
   }
 );
 
+//CF routes
+$app->get(
+	'/cf-latest-service-request',
+	function() use ($app, $appConf) {
+		$client = new GuzzleHttp\Client();
+		$results = $client->get($appConf->__get('cfApiUrl').'service_requests', [
+		    'auth' => [
+		      $appConf->__get('cfUsername'),
+		     	$appConf->__get('cfPassword')
+		    ],
+				'verify' => false
+		]);
+
+		$contentsClass = json_decode($results->getBody()->getContents());
+
+		$requestIds = array();
+		foreach ($contentsClass->resources as $resource) {
+			$parts = parse_url($resource->href);
+			$requestId = str_replace('/api/service_requests/','',$parts['path']);
+			array_push($requestIds, $requestId);
+		}
+
+		sort($requestIds);
+
+		$results = $client->get($appConf->__get('cfApiUrl').'service_requests/'.end($requestIds), [
+		    'auth' => [
+					$appConf->__get('cfUsername'),
+					$appConf->__get('cfPassword')
+		    ],
+				'verify' => false
+		]);
+
+		$lastRequest = json_decode($results->getBody()->getContents());
+
+    $response = $app->response();
+  	$response['Content-Type'] = 'application/json';
+  	$response->body(json_encode($lastRequest));
+  }
+);
+
 // Slim Doc route
 $app->get(
 	'/slim/',

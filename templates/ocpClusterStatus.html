@@ -1,6 +1,7 @@
 <h2>OCP Cluster Health</h2>
 
-<h3>Master/Infra Nodes</h3>
+<h3>Master/Infra Nodes<span id="badge-ocp-control-update" class="badge pull-right"></span></h3>
+
 <ul class="ul-ocp-control list-group">
   {% for ocpNode in ocpControlStatus %}
   <li id="li-node-{{ ocpNode.id }}" class="li-ocp-control list-group-item" aria-ocp-node-id="{{ ocpNode.id }}">
@@ -9,7 +10,8 @@
   </li>
   {% endfor %}
 </ul>
-<h3>Nodes</h3>
+
+<h3>Nodes<span id="badge-ocp-node-update" class="badge pull-right"></span></h3>
 <ul class="ul-ocp-node list-group">
   {% for ocpNode in ocpNodeStatus %}
   <li id="li-node-{{ ocpNode.id }}" class="li-ocp-node list-group-item" aria-ocp-node-id="{{ ocpNode.id }}">

@@ -25,8 +25,11 @@ class ApplicationConfig {
 	protected $osAuthUrl;
 	protected $osRegion;
 	protected $osUserId;
-        protected $osPassword;
+  protected $osPassword;
 	protected $osProjectId;
+	protected $cfApiUrl;
+	protected $cfUsername;
+	protected $cfPassword;
 
 	public static function getInstance() {
 		static $instance = null;
