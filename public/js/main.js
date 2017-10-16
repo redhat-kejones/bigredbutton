@@ -147,7 +147,9 @@ $(document).ready(function() {
 				if(nodeIds.indexOf(nodeId) == -1) { //== -1 for not in array
 					$("#badge-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("Nova: Unhealthy");
 					$("#badge-ocp-node-"+nodeId).removeClass('alert-success').addClass('alert-danger').html("OCP: Not Ready");
-					$(this).fadeOut(5000).remove();
+					$(this).fadeOut(10000 function() {
+						$(this).remove();
+					});
 					deletedNodeIds.push(nodeId);
 				}
 			});
