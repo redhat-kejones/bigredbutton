@@ -7,9 +7,9 @@ $(document).ready(function() {
 		$(this).hide();
 		//$("#img-dk-gif").removeClass("hidden").show();
 
-		stdout.push("<li>I have summoned the Human Chaos Monkey!!!!</li>");
-		stdout.push("<li>His job is to destroy a random node in your OCP cluster</li>");
-		stdout.push("<li>Prepare for destruction!!!!</li>");
+		stdout.push("<li>The Big Red Button has been clicked</li>");
+		stdout.push("<li>It's job is to destroy a random node in your OCP cluster</li>");
+		stdout.push("<li>Prepare for destruction!!!!!!!!!</li>");
 
 		response = $.getJSON( "/random-ocp-node-id" ).done(function(data){
 			stdout.push("<li>Now selecting random OCP Node for termination</li>");
@@ -22,6 +22,8 @@ $(document).ready(function() {
 				stdout.push("<li>"+ result.message +"</li>");
 			})
 		});
+
+		stdout.push("<li>You should probably call Jason for help</li>");
 	});
 
 	//Check OCP Cluster Status
