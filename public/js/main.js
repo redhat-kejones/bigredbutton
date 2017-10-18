@@ -7,7 +7,8 @@ $(document).ready(function() {
 		$(this).hide();
 		//$("#img-dk-gif").removeClass("hidden").show();
 
-		stdout.push("<li>The Big Red Button has been clicked</li>");
+		stdout.push("<li>I can't believe you actually clicked the Big Red Button!</li>");
+		stdout.push("<li>You're such an idiot</li>");
 		stdout.push("<li>It's job is to destroy a random node in your OCP cluster</li>");
 		stdout.push("<li>Prepare for destruction!!!!!!!!!</li>");
 
@@ -208,8 +209,6 @@ $(document).ready(function() {
 				//$("#img-dk-gif").hide();
 			} else if (results.request_state == 'pending') {
 				requestContent += '<span class="badge alert-info pull-right">';
-				stdout.push( "<li>Kevin, don't freak out! CloudForms will automatically replace the OCP node</li>" );
-				stdout.push( "<li>Sit back, relax and play a game with Gerald and Jared</li>" );
 			} else {
 				requestContent += '<span class="badge alert-info pull-right">';
 			}
