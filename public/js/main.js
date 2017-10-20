@@ -8,8 +8,8 @@ $(document).ready(function() {
 		//$("#img-dk-gif").removeClass("hidden").show();
 
 		stdout.push("<li>I can't believe you actually clicked the Big Red Button!</li>");
-		stdout.push("<li>You're such an idiot</li>");
-		stdout.push("<li>It's job is to destroy a random node in your OCP cluster</li>");
+		stdout.push("<li>Would you jump off a bridge if Jason told you to?</li>");
+		stdout.push("<li>The button's job is to destroy a random node in your OCP cluster</li>");
 		stdout.push("<li>Prepare for destruction!!!!!!!!!</li>");
 
 		response = $.getJSON( "/random-ocp-node-id" ).done(function(data){
