@@ -22,7 +22,8 @@ $(document).ready(function() {
 			})
 		});
 
-		stdout.push("<li>You should probably call the support for help!</li>");
+		stdout.push("<li>You should probably call support for help!</li>");
+		stdout.push("<li>Call 1-888-RED-HAT1</li>");
 	});
 
 	//Check OCP Cluster Status
