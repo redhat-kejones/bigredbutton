@@ -8,23 +8,21 @@ $(document).ready(function() {
 		//$("#img-dk-gif").removeClass("hidden").show();
 
 		stdout.push("<li>I can't believe you actually clicked the Big Red Button!</li>");
-		stdout.push("<li>Would you jump off a bridge if Jason told you to?</li>");
-		stdout.push("<li>The button's job is to destroy a random node in your OCP cluster</li>");
-		stdout.push("<li>Prepare for destruction!!!!!!!!!</li>");
+		stdout.push("<li>The button's job is to destroy a random node in your OpenShift cluster</li>");
 
 		response = $.getJSON( "/random-ocp-node-id" ).done(function(data){
-			stdout.push("<li>Now selecting random OCP Node for termination</li>");
+			stdout.push("<li>Now selecting random OpenShift App Node for termination</li>");
 			randomOcpNodeId = data;
-			stdout.push("<li>OCP Node with UUID: "+ randomOcpNodeId +" selected for termination</li>");
+			stdout.push("<li>OpenShift Node with UUID: "+ randomOcpNodeId +" selected for termination</li>");
 
 			$.getJSON("/delete-server/"+randomOcpNodeId, function(data){
-				stdout.push("<li>Sent request to terminate OCP Node: "+ randomOcpNodeId +"</li>");
+				stdout.push("<li>Sent request to terminate OpenShift Node: "+ randomOcpNodeId +"</li>");
 			}).done(function(result){
 				stdout.push("<li>"+ result.message +"</li>");
 			})
 		});
 
-		stdout.push("<li>You should probably call Jason for help</li>");
+		stdout.push("<li>You should probably call the support for help!</li>");
 	});
 
 	//Check OCP Cluster Status
